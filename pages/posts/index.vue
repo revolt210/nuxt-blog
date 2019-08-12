@@ -49,7 +49,8 @@
         },
         head: {
             title: 'Web Development Blog'
-        }
+        },
+        middleware: 'log'
     }
 </script>
 

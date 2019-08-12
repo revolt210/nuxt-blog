@@ -11,6 +11,7 @@
     import AdminPostForm from "~/components/Admin/AdminPostForm";
     export default {
         layout: 'admin',
+        middleware: ['check-auth', 'auth'],
         components: { AdminPostForm },
         asyncData(context) {
             return axios.get(`https://fir-b9e79.firebaseio.com/posts/${context.params.postId}.json`).then(response => {

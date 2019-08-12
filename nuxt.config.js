@@ -1,4 +1,5 @@
-
+const bodyParser = require('body-parser');
+const axios = require('axios');
 export default {
   mode: 'universal',
   /*
@@ -59,7 +60,8 @@ export default {
     }
   },
   env: {
-    baseURL: 'https://fir-b9e79.firebaseio.com'
+    baseURL: 'https://fir-b9e79.firebaseio.com',
+    fbAPIKey: 'AIzaSyD-BJU1QinflXSWNUmSLH8XnTkWs_p22RE'
   },
   router: {
     extendRoutes(routes, resolve) {
@@ -73,5 +75,26 @@ export default {
   transition: {
     name: 'fade',
     mode: 'out-in'
+  },
+
+  serverMiddleware: [
+    bodyParser.json(),
+    '~/api'
+  ],
+  generate: {
+    routes: function() {
+      return axios
+        .get("https://fir-b9e79.firebaseio.com/posts.json")
+        .then(res => {
+          const routes = [];
+          for (const key in res.data) {
+            routes.push({
+              route: "/posts/" + key,
+              payload: {postData: res.data[key]}
+            });
+          }
+          return routes;
+        });
+    }
   }
 }
